@@ -96,7 +96,7 @@ export default function DashboardPage() {
 
       try {
         const responses = await getUserQuizResponses(user.id);
-        const completed = new Set(responses.map(r => r.quiz_id));
+        const completed = new Set<string>(responses.map((r: any) => String(r.quiz_id)));
         setCompletedQuizzes(completed);
       } catch (error) {
         console.error('Error loading quiz responses:', error);
@@ -143,7 +143,7 @@ export default function DashboardPage() {
     try {
       // Fetch the creator's answers for this specific quiz
       const responses = await getUserQuizResponses(user.id);
-      const creatorResponse = responses.find(r => r.quiz_id === match.quiz_id);
+      const creatorResponse = responses.find((r: any) => r.quiz_id === match.quiz_id);
       
       if (creatorResponse) {
         setDetailsModal({

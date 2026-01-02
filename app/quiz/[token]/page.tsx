@@ -7,7 +7,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { token } = params;
+  const { token } = await params;
   
   try {
     const result = await validateQuizLink(token);
@@ -42,6 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default function SharedQuizPage({ params }: Props) {
-  return <SharedQuizClient token={params.token} />;
+export default async function SharedQuizPage({ params }: Props) {
+  const { token } = await params;
+  return <SharedQuizClient token={token} />;
 }

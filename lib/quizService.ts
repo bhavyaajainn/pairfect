@@ -190,14 +190,19 @@ export async function createQuizLink(quizId: string, respondentName: string, use
  * Validate a quiz link token
  */
 export async function validateQuizLink(token: string) {
+  console.log('quizService: validateQuizLink called with token:', token);
   const { data, error } = await supabase
     .from('quiz_links')
     .select('*')
     .eq('token', token)
     .single();
 
-  if (error) return { valid: false, error: 'Link not found' };
+  if (error) {
+    console.error('quizService: Error fetching quiz link:', error);
+    return { valid: false, error: 'Link not found' };
+  }
   
+  console.log('quizService: Quiz link found:', data);
   // ALWAYS check if a response already exists for this token
   const { data: responseData, error: responseError } = await supabase
     .from('named_quiz_responses')
@@ -339,7 +344,7 @@ export async function getUserMatches(userId: string) {
     return [];
   }
 
-  const tokens = userLinks.map(l => l.token).filter(Boolean);
+  const tokens = userLinks.map((l: any) => l.token).filter(Boolean);
   
   // 2. Fetch responses. We try to find them by link_token first.
   // We use a more robust query that handles the "No matches yet" issue.
