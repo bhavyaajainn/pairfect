@@ -1,0 +1,250 @@
+.container {
+  min-height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('/assets/life-priorities-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Ensure absolute children position relative to this */
+}
+
+.header {
+  text-align: center;
+  padding: 2rem;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--dark-text);
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.quizContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.quizContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.dragIcon {
+  color: #999;
+  margin-right: 0.5rem;
+  cursor: grab;
+}
+
+.itemContent {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2.5rem;
+  padding-bottom: 2rem;
+}
+
+.completeButton {
+  min-width: 240px;
+  max-width: 300px;
+}
+
+.item {
+  background-color: var(--white);
+  border: 2px solid #e5e5e5;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
+}
+
+.item:hover {
+  border-color: var(--primary-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.item.dragging {
+  opacity: 0.5;
+  border-style: dashed;
+  background-color: var(--light-yellow);
+}
+
+.rank {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.content {
+  flex-grow: 1;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.dragHandle {
+  color: #ccc;
+  cursor: grab;
+}
+
+.resultCard {
+  background-color: var(--light-yellow);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  margin-top: 2rem;
+  animation: fadeIn 0.5s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resultActions {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.backButton {
+  min-width: 200px;
+  max-width: 280px;
+}
+
+.resultTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.resultList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.resultDescription {
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  color: #444;
+  text-align: center;
+}
+
+.resultItem {
+  text-align: left;
+  width: 100%;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.resultRank {
+  font-weight: 700;
+  color: var(--primary-yellow);
+  margin-right: 0.5rem;
+}
+
+.resultMeaning {
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-right: 0.25rem;
+}
+
+.resultItemText {
+  color: #555;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.backLink {
+  position: relative;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--dark-text);
+  text-decoration: none;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+  z-index: 10;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.backLink:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateX(-2px);
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .backLink {
+    position: relative;
+    top: auto;
+    left: auto;
+    align-self: flex-start;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
+
+  .quizContainer {
+    padding: 0.5rem 1rem;
+  }
+}

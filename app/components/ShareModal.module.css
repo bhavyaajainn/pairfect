@@ -1,0 +1,166 @@
+.shareModal {
+  max-width: 450px !important;
+  padding: 2.5rem !important;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  text-align: center;
+}
+
+.iconWrapper {
+  width: 64px;
+  height: 64px;
+  background-color: var(--light-yellow);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.icon {
+  color: var(--primary-yellow);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputGroup label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-yellow);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  background-color: #fef2f2;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #fee2e2;
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.linkBox {
+  display: flex;
+  gap: 0.5rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.linkInput {
+  flex-grow: 1;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  color: #374151;
+  padding: 0.5rem;
+  outline: none;
+}
+
+.copyButton {
+  background: white;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.copyButton:hover {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.successHint {
+  font-size: 0.85rem;
+  color: #059669;
+  background-color: #ecfdf5;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #d1fae5;
+  text-align: center;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.whatsappButton {
+  background-color: #25d366 !important;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: background-color 0.2s;
+}
+
+.whatsappButton:hover {
+  background-color: #128c7e !important;
+}
+
+.whatsappIcon {
+  width: 20px;
+  height: 20px;
+}

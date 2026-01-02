@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  /* Pairfect Color Palette */
+  --primary-yellow: #FFC107; /* Warmer Amber/Gold */
+  --light-yellow: #FFF8E1; /* Very light amber */
+  --dark-text: #212121; /* Softer black */
+  --white: #FFFFFF;
+  
+  --background: var(--primary-yellow);
+  --foreground: var(--dark-text);
+  --card-bg: var(--white);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}

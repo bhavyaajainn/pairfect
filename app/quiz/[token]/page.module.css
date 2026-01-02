@@ -1,0 +1,108 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9fafb;
+  padding: 2rem;
+}
+
+.loadingCard, .errorCard {
+  background: white;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.successCard {
+  background: white;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.comparisonWrapper {
+  width: 100%;
+  text-align: left;
+  margin: 1rem 0;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.comparisonWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.comparisonWrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.comparisonWrapper::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+}
+
+.comparisonWrapper::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+
+.actions {
+  margin-top: 1rem;
+}
+
+.loadingText {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--primary-yellow);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorTitle {
+  color: #dc2626;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.errorText {
+  color: #666;
+  line-height: 1.6;
+}
+
+.successTitle {
+  color: #059669;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.successText {
+  color: #666;
+  line-height: 1.6;
+}

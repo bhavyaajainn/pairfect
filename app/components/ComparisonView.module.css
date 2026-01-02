@@ -1,0 +1,160 @@
+/* Comparison Grid (Life Priorities) */
+.comparisonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.columnTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}
+
+.rankingList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rankingItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.rankingItem.match {
+  background-color: #ecfdf5;
+  border: 1px solid #10b981;
+}
+
+.rank {
+  font-weight: 800;
+  color: #6b7280;
+  width: 20px;
+}
+
+.matchIcon {
+  margin-left: auto;
+  color: #10b981;
+}
+
+/* Task Grid (Responsibility) */
+.taskGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.taskItem {
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.taskItem.match {
+  background-color: #ecfdf5;
+  border-color: #10b981;
+}
+
+.taskText {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.taskStatus {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statusLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.yes { color: #10b981; }
+.no { color: #ef4444; }
+
+/* QA List (General) */
+.qaList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.qaItem {
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #f3f4f6;
+}
+
+.qaItem.match {
+  background-color: #ecfdf5;
+  border-color: #10b981;
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.qNumber {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #9ca3af;
+  text-transform: uppercase;
+}
+
+.matchBadge, .mismatchBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.matchBadge { background-color: #10b981; color: white; }
+.mismatchBadge { background-color: #f3f4f6; color: #6b7280; }
+
+.answersRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.answerBox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.value {
+  font-weight: 600;
+  color: #111827;
+}
+
+@media (max-width: 640px) {
+  .comparisonGrid, .answersRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
