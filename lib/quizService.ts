@@ -190,7 +190,6 @@ export async function createQuizLink(quizId: string, respondentName: string, use
  * Validate a quiz link token
  */
 export async function validateQuizLink(token: string) {
-  console.log('quizService: validateQuizLink called with token:', token);
   const { data, error } = await supabase
     .from('quiz_links')
     .select('*')
@@ -198,11 +197,9 @@ export async function validateQuizLink(token: string) {
     .single();
 
   if (error) {
-    console.error('quizService: Error fetching quiz link:', error);
     return { valid: false, error: 'Link not found' };
   }
   
-  console.log('quizService: Quiz link found:', data);
   // ALWAYS check if a response already exists for this token
   const { data: responseData, error: responseError } = await supabase
     .from('named_quiz_responses')

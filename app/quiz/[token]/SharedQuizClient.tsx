@@ -34,45 +34,21 @@ export default function SharedQuizClient({ token }: { token: string }) {
   const [completed, setCompleted] = useState(false);
   const [respondentAnswers, setRespondentAnswers] = useState<any>(null);
   const [creatorAnswers, setCreatorAnswers] = useState<any>(null);
-  
-  // Debug states
-  const [debugInfo, setDebugInfo] = useState<string[]>([]);
-  const [showDebug, setShowDebug] = useState(false);
-
-  const addLog = (msg: string) => {
-    console.log(msg);
-    setDebugInfo(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
-  };
 
   useEffect(() => {
-    addLog(`SharedQuizClient: Mounted with token: "${token}"`);
-    
-    // Auto-show debug if loading takes too long
-    const debugTimer = setTimeout(() => {
-      if (loading) {
-        addLog('Debug: Loading is taking longer than expected. Showing diagnostic info.');
-        setShowDebug(true);
-      }
-    }, 5000);
-
     // Check if Supabase is properly configured
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    addLog(`Debug: Supabase URL exists: ${!!supabaseUrl}`);
-    addLog(`Debug: Supabase Key exists: ${!!supabaseAnonKey}`);
     
     if (!supabaseUrl || !supabaseAnonKey) {
-      addLog('Error: Missing Supabase environment variables');
       setError('Connection configuration is missing. Please check Vercel environment variables.');
       setLoading(false);
       return;
     }
 
     async function checkLink() {
-      addLog('SharedQuizClient: Starting link validation...');
       try {
         const result = await validateQuizLink(token);
-        addLog(`SharedQuizClient: Validation result received: ${JSON.stringify(result).substring(0, 100)}...`);
         
         if (result.valid) {
           setLinkData(result.data);
@@ -82,18 +58,15 @@ export default function SharedQuizClient({ token }: { token: string }) {
           setRespondentAnswers(result.respondentAnswers);
           
           if (result.creatorId) {
-            addLog('SharedQuizClient: Fetching creator answers...');
             const creatorResp = await getUserQuizResponse(result.creatorId, result.data.quiz_id);
             if (creatorResp) {
               setCreatorAnswers(creatorResp.answers);
             }
           }
         } else {
-          addLog(`SharedQuizClient: Validation failed with error: ${result.error}`);
           setError(result.error || 'Invalid link');
         }
       } catch (err: any) {
-        addLog(`SharedQuizClient: Unexpected error: ${err.message || 'Unknown error'}`);
         console.error('SharedQuizClient: Unexpected error during validation:', err);
         setError('Failed to validate link due to an internal error.');
       } finally {
@@ -104,12 +77,9 @@ export default function SharedQuizClient({ token }: { token: string }) {
     if (token) {
       checkLink();
     } else {
-      addLog('Warning: No token provided');
       setLoading(false);
       setError('No link token found.');
     }
-
-    return () => clearTimeout(debugTimer);
   }, [token]);
 
   const handleQuizComplete = async (answers: any) => {
@@ -140,39 +110,13 @@ export default function SharedQuizClient({ token }: { token: string }) {
     }
   };
 
-  // Helper to render debug overlay
-  const renderDebug = () => (
-    <div style={{ 
-      position: 'fixed', 
-      bottom: 0, 
-      left: 0, 
-      right: 0, 
-      background: 'rgba(0,0,0,0.8)', 
-      color: '#0f0', 
-      padding: '10px', 
-      fontSize: '10px', 
-      maxHeight: '150px', 
-      overflowY: 'auto',
-      zIndex: 9999,
-      fontFamily: 'monospace'
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <strong>Diagnostic Logs:</strong>
-        <button onClick={() => setShowDebug(false)} style={{ background: '#333', color: '#fff', border: 'none', cursor: 'pointer' }}>Close</button>
-      </div>
-      {debugInfo.map((log, i) => <div key={i}>{log}</div>)}
-    </div>
-  );
-
   if (loading) {
     return (
       <div className={styles.container}>
         <div className={styles.loadingCard}>
           <div className={styles.spinner}></div>
           <p>Validating your link...</p>
-          {showDebug && <p style={{ fontSize: '10px', color: '#666', marginTop: '10px' }}>Connection: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Configured' : 'Missing'}</p>}
         </div>
-        {showDebug && renderDebug()}
       </div>
     );
   }
@@ -187,7 +131,6 @@ export default function SharedQuizClient({ token }: { token: string }) {
             <Button onClick={() => router.push('/')}>Go Home</Button>
             <Button variant="outline" onClick={() => window.location.reload()}>Try Again</Button>
           </div>
-          {showDebug && <div style={{ marginTop: '20px', textAlign: 'left' }}>{renderDebug()}</div>}
         </div>
       </div>
     );
@@ -245,10 +188,5 @@ export default function SharedQuizClient({ token }: { token: string }) {
     );
   }
 
-  return (
-    <>
-      <SelectedQuiz {...quizProps} />
-      {showDebug && renderDebug()}
-    </>
-  );
+  return <SelectedQuiz {...quizProps} />;
 }

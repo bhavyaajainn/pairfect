@@ -12,14 +12,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const result = await validateQuizLink(token);
     const quizTitle = result.data?.quiz_id?.split(/[-_]/).map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') || 'Quiz';
-    const inviterName = result.data?.respondent_name || 'A friend';
 
     return {
-      title: `${quizTitle} | Invited by ${inviterName}`,
+      title: `${quizTitle}`,
       description: `You've been invited to take the ${quizTitle} on Pairfect. Discover your compatibility and connect on a deeper level!`,
       openGraph: {
         title: `Take the ${quizTitle} on Pairfect!`,
-        description: `Invited by ${inviterName}. Connect on a deeper level through play.`,
+        description: `Connect on a deeper level through play.`,
         images: [{
           url: 'https://res.cloudinary.com/di81jpl3e/image/upload/v1767365500/share-poster_nljhm9.jpg',
           width: 1200,
@@ -31,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       twitter: {
         card: "summary_large_image",
         title: `Take the ${quizTitle} on Pairfect!`,
-        description: `Invited by ${inviterName}. Connect on a deeper level through play.`,
+        description: `Connect on a deeper level through play.`,
         images: ['https://res.cloudinary.com/di81jpl3e/image/upload/v1767365500/share-poster_nljhm9.jpg'],
       }
     };
