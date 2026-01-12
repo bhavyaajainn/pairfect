@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import SharedQuizClient from './SharedQuizClient';
 import { validateQuizLink } from '@/lib/quizService';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Footer from '../components/Footer';
 import styles from './about.module.css';
 
