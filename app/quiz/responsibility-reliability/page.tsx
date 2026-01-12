@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { saveQuizResponse } from '@/lib/quizService';
 import Button from '../../components/Button';
@@ -13,7 +13,7 @@ import { ResponsibilityTask, RESPONSIBILITY_RELIABILITY_TASKS as TASKS } from '@
 
 const MAX_SELECTION = 6;
 
-interface QuizProps {
+export interface QuizProps {
   isShared?: boolean;
   onComplete?: (answers: any) => void;
   respondentName?: string;
@@ -56,7 +56,6 @@ export default function ResponsibilityReliabilityQuiz({ isShared, onComplete, re
       setSaving(true);
       try {
         await saveQuizResponse(user.id, 'responsibility_reliability', selectedTaskIds);
-        console.log('Quiz response saved successfully');
       } catch (error: any) {
         console.error('Error saving quiz response:', error);
       } finally {
@@ -64,7 +63,6 @@ export default function ResponsibilityReliabilityQuiz({ isShared, onComplete, re
       }
     }
   };
-
 
   return (
     <div className={styles.container}>
@@ -152,3 +150,4 @@ export default function ResponsibilityReliabilityQuiz({ isShared, onComplete, re
     </div>
   );
 }
+

@@ -36,7 +36,6 @@ export default function LifePrioritiesClient({ isShared, onComplete, respondentN
           const response = await getUserQuizResponse(user.id, 'life_priorities');
           if (response) {
             setHasTakenBefore(true);
-            // Optionally could set initial items to previous answers
           }
         } catch (error) {
           console.error('Error checking previous response:', error);

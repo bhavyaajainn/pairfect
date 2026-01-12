@@ -1,15 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { 
-  ArrowLeft, Coffee, Mountain, DollarSign, Utensils, 
-  PartyPopper, Gamepad2, Briefcase, Gem, HeartPulse, 
-  MessageSquare, Moon, Clapperboard, Dumbbell, Dog, 
-  Building2, Compass, Home, Sun, Wallet, Wine,
-  Users, User, Activity, Film, MapPin, BedDouble, Pizza
-} from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { saveQuizResponse } from '@/lib/quizService';
 import Button from '../../components/Button';
@@ -17,7 +11,7 @@ import styles from './quiz.module.css';
 
 import { PartnerPreferenceQuestion, PARTNER_PREFERENCES_QUESTIONS as QUESTIONS } from '@/lib/quizData';
 
-interface QuizProps {
+export interface QuizProps {
   isShared?: boolean;
   onComplete?: (answers: Record<number, string>) => void;
   respondentName?: string;
@@ -62,13 +56,11 @@ export default function PartnerPreferencesQuiz({ isShared, onComplete, responden
       if (user) {
         setSaving(true);
         try {
-          // Convert answers object to the desired format for saveQuizResponse
           const formattedAnswers = Object.entries(newAnswers).map(([questionId, choice]) => ({
             category: QUESTIONS.find(q => q.id === parseInt(questionId))?.category || 'Unknown',
             choice: choice
           }));
           await saveQuizResponse(user.id, 'partner_preferences', formattedAnswers);
-          console.log('Quiz response saved successfully');
         } catch (error) {
           console.error('Error saving quiz response:', error);
         } finally {
@@ -163,3 +155,4 @@ export default function PartnerPreferencesQuiz({ isShared, onComplete, responden
     </div>
   );
 }
+

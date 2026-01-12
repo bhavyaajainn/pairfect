@@ -11,7 +11,7 @@ import styles from './quiz.module.css';
 
 import { EmotionalQuestion, EMOTIONAL_COMPATIBILITY_QUESTIONS as QUESTIONS } from '@/lib/quizData';
 
-interface QuizProps {
+export interface QuizProps {
   isShared?: boolean;
   onComplete?: (answers: any) => void;
   respondentName?: string;
@@ -60,7 +60,6 @@ export default function EmotionalCompatibilityQuiz({ isShared, onComplete, respo
           setSaving(true);
           try {
             await saveQuizResponse(user.id, 'emotional_compatibility', newAnswers);
-            console.log('Quiz response saved successfully');
           } catch (error: any) {
             console.error('Error saving quiz response:', error);
           } finally {
@@ -70,7 +69,6 @@ export default function EmotionalCompatibilityQuiz({ isShared, onComplete, respo
       }, 300);
     }
   };
-
 
   const currentQuestion = QUESTIONS[currentQuestionIndex];
 
@@ -118,7 +116,7 @@ export default function EmotionalCompatibilityQuiz({ isShared, onComplete, respo
           <div className={styles.resultCard}>
             <h2 className={styles.resultTitle}>Your Emotional Style</h2>
             <p className={styles.resultDescription}>
-              You've completed the quiz! Here's what your responses suggest about your emotional compatibility style.
+              You&apos;ve completed the quiz! Here&apos;s what your responses suggest about your emotional compatibility style.
             </p>
             
             {saving && (
@@ -150,3 +148,4 @@ export default function EmotionalCompatibilityQuiz({ isShared, onComplete, respo
     </div>
   );
 }
+

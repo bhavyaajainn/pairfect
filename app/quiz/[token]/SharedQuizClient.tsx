@@ -10,15 +10,14 @@ import { useNotification } from '@/app/context/NotificationContext';
 
 // Import quiz components
 import PartnerPreferencesQuiz from '../partner-preferences/page';
-import LifePrioritiesQuiz from '../life-priorities/page';
+import LifePrioritiesClient from '../life-priorities/LifePrioritiesClient';
 import EmotionalCompatibilityQuiz from '../emotional-compatibility/page';
 import ConflictCommunicationQuiz from '../conflict-communication/page';
 import ResponsibilityReliabilityQuiz from '../responsibility-reliability/page';
-import { CloudCog } from 'lucide-react';
 
 const QuizComponents: Record<string, any> = {
   'partner_preferences': PartnerPreferencesQuiz,
-  'life_priorities': LifePrioritiesQuiz,
+  'life_priorities': LifePrioritiesClient,
   'emotional_compatibility': EmotionalCompatibilityQuiz,
   'conflict_communication': ConflictCommunicationQuiz,
   'responsibility_reliability': ResponsibilityReliabilityQuiz,

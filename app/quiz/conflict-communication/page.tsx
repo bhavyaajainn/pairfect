@@ -11,7 +11,7 @@ import styles from './quiz.module.css';
 
 import { ConflictQuestion, CONFLICT_COMMUNICATION_QUESTIONS as QUESTIONS } from '@/lib/quizData';
 
-interface QuizProps {
+export interface QuizProps {
   isShared?: boolean;
   onComplete?: (answers: any) => void;
   respondentName?: string;
@@ -60,7 +60,6 @@ export default function ConflictCommunicationQuiz({ isShared, onComplete, respon
           setSaving(true);
           try {
             await saveQuizResponse(user.id, 'conflict_communication', newAnswers);
-            console.log('Quiz response saved successfully');
           } catch (error: any) {
             console.error('Error saving quiz response:', error);
           } finally {
@@ -70,7 +69,6 @@ export default function ConflictCommunicationQuiz({ isShared, onComplete, respon
       }, 300);
     }
   };
-
 
   const currentQuestion = QUESTIONS[currentQuestionIndex];
 
@@ -117,7 +115,7 @@ export default function ConflictCommunicationQuiz({ isShared, onComplete, respon
           <div className={styles.resultCard}>
             <h2 className={styles.resultTitle}>Your Communication Style</h2>
             <p className={styles.resultDescription}>
-              You've completed the quiz! Here's a summary of your responses.
+              You&apos;ve completed the quiz! Here&apos;s a summary of your responses.
             </p>
             
             {saving && (
@@ -149,3 +147,4 @@ export default function ConflictCommunicationQuiz({ isShared, onComplete, respon
     </div>
   );
 }
+
