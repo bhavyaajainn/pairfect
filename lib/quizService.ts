@@ -17,6 +17,7 @@ export interface NamedQuizResponse {
  * Save authenticated user's quiz response
  */
 export async function saveQuizResponse(userId: string, quizId: string, answers: any) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   const { data, error } = await supabase
     .from('user_quiz_responses')
     .upsert({
@@ -38,6 +39,7 @@ export async function saveQuizResponse(userId: string, quizId: string, answers: 
  * Get user's quiz response
  */
 export async function getUserQuizResponse(userId: string, quizId: string) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   const { data, error } = await supabase
     .from('user_quiz_responses')
     .select('*')
@@ -53,6 +55,7 @@ export async function getUserQuizResponse(userId: string, quizId: string) {
  * Get all quiz responses for a user
  */
 export async function getUserQuizResponses(userId: string) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   const { data, error } = await supabase
     .from('user_quiz_responses')
     .select('quiz_id, answers, created_at, updated_at')
@@ -71,6 +74,7 @@ export async function saveNamedQuizResponse(
   answers: any,
   matchPercentage?: number
 ) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   const { data, error } = await supabase
     .from('named_quiz_responses')
     .upsert({
@@ -93,6 +97,7 @@ export async function saveNamedQuizResponse(
  * Get named responses for a quiz
  */
 export async function getNamedQuizResponses(quizId: string) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   const { data, error } = await supabase
     .from('named_quiz_responses')
     .select('*')
@@ -107,6 +112,7 @@ export async function getNamedQuizResponses(quizId: string) {
  * Delete a named quiz response
  */
 export async function deleteNamedQuizResponse(id: string) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   const { error } = await supabase
     .from('named_quiz_responses')
     .delete()
@@ -134,6 +140,7 @@ function generateToken(length: number = 16): string {
  * Create a shareable quiz link
  */
 export async function createQuizLink(quizId: string, respondentName: string, userId: string) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   // Check if respondent name is already used by this user for this quiz
   const { data: existingLinks, error: checkError } = await supabase
     .from('quiz_links')
@@ -190,6 +197,7 @@ export async function createQuizLink(quizId: string, respondentName: string, use
  * Validate a quiz link token
  */
 export async function validateQuizLink(token: string) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   const { data, error } = await supabase
     .from('quiz_links')
     .select('*')
@@ -246,6 +254,7 @@ export async function submitSharedResponse(
   answers: any,
   matchPercentage: number = 0
 ) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   console.log('Submitting shared response via Trigger:', { token, respondentName });
   
   // 1. Fetch the creator's answers to calculate match percentage
@@ -323,6 +332,7 @@ export async function submitSharedResponse(
  * Fetch all matches (respondent responses) for a user's quizzes
  */
 export async function getUserMatches(userId: string) {
+  if (!supabase) throw new Error("Supabase client not initialized");
   console.log('Fetching matches for user:', userId);
   
   // 1. Get all links created by this user
