@@ -17,23 +17,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Pairfect | Find Your Perfect Match through Fun Quizzes",
-    template: "%s | Pairfect"
+    default: "Pairfit | Find Your Perfect Match through Fun Quizzes",
+    template: "%s | Pairfit"
   },
-  description: "Discover your compatibility with friends and partners through interactive and meaningful relationship quizzes. Build stronger bonds with Pairfect.",
-  keywords: ["relationship quiz", "compatibility test", "pairfect", "emotional compatibility", "couple quizzes", "get to know someone"],
-  authors: [{ name: "Pairfect Team" }],
+  description: "Discover your compatibility with friends and partners through interactive and meaningful relationship quizzes. Build stronger bonds with Pairfit.",
+  keywords: ["relationship quiz", "compatibility test", "pairfit", "emotional compatibility", "couple quizzes", "get to know someone"],
+  authors: [{ name: "Pairfit Team" }],
   openGraph: {
-    title: "Pairfect | Relationship Compatibility Quizzes",
+    title: "Pairfit | Relationship Compatibility Quizzes",
     description: "Discover your compatibility score and connect on a Deeper level through play.",
-    url: "https://pairfect.app",
-    siteName: "Pairfect",
+    url: "https://pairfit.app",
+    siteName: "Pairfit",
     images: [
       {
         url: "https://res.cloudinary.com/di81jpl3e/image/upload/v1767365500/share-poster_nljhm9.jpg",
         width: 1200,
         height: 630,
-        alt: "Pairfect - Connect on a deeper level",
+        alt: "Pairfit - Connect on a deeper level",
       },
     ],
     locale: "en_US",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pairfect | Find Your Perfect Match",
+    title: "Pairfit | Find Your Perfect Match",
     description: "Take fun quizzes with friends and discover your compatibility score.",
     images: ["https://res.cloudinary.com/di81jpl3e/image/upload/v1767365500/share-poster_nljhm9.jpg"],
   },

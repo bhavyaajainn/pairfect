@@ -43,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await supabase?.auth?.signOut();
     setShowDropdown(false);
     window.location.href = '/';
   };
@@ -59,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     <>
       <nav className={styles.navbar}>
         <Link href="/" className={styles.logo}>
-          Pairfect
+          Pairfit
         </Link>
         
         <div className={styles.navLinks}>
@@ -90,7 +90,7 @@ const Navbar: React.FC<NavbarProps> = () => {
             ) : (
               <>
                 <Link href="/about" className={styles.navLink}>About</Link>
-                <button onClick={openLogin} className={styles.navLink} style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}>
+                <button onClick={openLogin} className={styles.navLink} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                   Login
                 </button>
               </>

@@ -5,7 +5,7 @@ import styles from './legal.module.css';
 
 export const metadata: Metadata = {
   title: "Privacy & Terms",
-  description: "Understand how Pairfect handles your data and our terms of service. We prioritize your privacy and transparency.",
+  description: "Understand how Pairfit handles your data and our terms of service. We prioritize your privacy and transparency.",
 };
 
 const PrivacyTermsContent = () => (
@@ -16,11 +16,11 @@ const PrivacyTermsContent = () => (
 
     <section className={styles.section}>
       <p className={styles.paragraph}>
-        At Pairfect, your privacy is important to us. We are committed to keeping your information safe, minimal, and transparent.
+        At Pairfit, your privacy is important to us. We are committed to keeping your information safe, minimal, and transparent.
       </p>
 
       <p className={styles.paragraph}>
-        Pairfect collects only what is necessary to provide a meaningful experience. We may collect:
+        Pairfit collects only what is necessary to provide a meaningful experience. We may collect:
       </p>
       
       <ul className={styles.paragraph}>
@@ -29,7 +29,7 @@ const PrivacyTermsContent = () => (
       </ul>
 
       <p className={styles.paragraph}>
-        We do not collect sensitive or personal information such as passwords in plain text, financial details, government IDs, phone numbers, or private messages. Quiz responses are used only to calculate compatibility and improve the Pairfect experience.
+        We do not collect sensitive or personal information such as passwords in plain text, financial details, government IDs, phone numbers, or private messages. Quiz responses are used only to calculate compatibility and improve the Pairfit experience.
       </p>
 
       <p className={styles.paragraph}>
@@ -37,19 +37,19 @@ const PrivacyTermsContent = () => (
       </p>
 
       <p className={styles.paragraph}>
-        Pairfect quizzes are designed for insight and connection, not judgment. Participation is voluntary, and users remain in control of what they choose to share. Public quiz links are time-limited and can be used only as intended.
+        Pairfit quizzes are designed for insight and connection, not judgment. Participation is voluntary, and users remain in control of what they choose to share. Public quiz links are time-limited and can be used only as intended.
       </p>
 
       <p className={styles.paragraph}>
-        By using Pairfect, you agree to use the platform responsibly and respectfully. Any misuse of the service, attempts to exploit the system, or violation of intended usage may result in restricted access.
+        By using Pairfit, you agree to use the platform responsibly and respectfully. Any misuse of the service, attempts to exploit the system, or violation of intended usage may result in restricted access.
       </p>
 
       <p className={styles.paragraph}>
-        Pairfect exists to build trust, encourage honest connection, and keep things simple. If you ever have questions about privacy or data usage, transparency is our promise.
+        Pairfit exists to build trust, encourage honest connection, and keep things simple. If you ever have questions about privacy or data usage, transparency is our promise.
       </p>
 
       <p className={styles.footer_note}>
-        Your trust matters to us, and we work hard to keep Pairfect safe, respectful, and meaningful.
+        Your trust matters to us, and we work hard to keep Pairfit safe, respectful, and meaningful.
       </p>
     </section>
   </main>

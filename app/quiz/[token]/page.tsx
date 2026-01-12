@@ -15,28 +15,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     return {
       title: `${quizTitle}`,
-      description: `You've been invited to take the ${quizTitle} on Pairfect. Discover your compatibility and connect on a deeper level!`,
+      description: `You've been invited to take the ${quizTitle} on Pairfit. Discover your compatibility and connect on a deeper level!`,
       openGraph: {
-        title: `Take the ${quizTitle} on Pairfect!`,
+        title: `Take the ${quizTitle} on Pairfit!`,
         description: `Connect on a deeper level through play.`,
         images: [{
           url: 'https://res.cloudinary.com/di81jpl3e/image/upload/v1767365500/share-poster_nljhm9.jpg',
           width: 1200,
           height: 1200,
-          alt: 'Pairfect'
+          alt: 'Pairfit'
         }],
-        url: `https://pairfect.app/quiz/${token}`,
+        url: `https://pairfit.app/quiz/${token}`,
       },
       twitter: {
         card: "summary_large_image",
-        title: `Take the ${quizTitle} on Pairfect!`,
+        title: `Take the ${quizTitle} on Pairfit!`,
         description: `Connect on a deeper level through play.`,
         images: ['https://res.cloudinary.com/di81jpl3e/image/upload/v1767365500/share-poster_nljhm9.jpg'],
       }
     };
   } catch (error) {
     return {
-      title: "Shared Quiz | Pairfect",
+      title: "Shared Quiz | Pairfit",
     };
   }
 }

@@ -21,7 +21,7 @@
 /* Variants */
 .primary {
   background-color: var(--primary-yellow);
-  color: var(--white);
+  color: var(--dark-text);
 }
 
 .primary:hover {
@@ -31,7 +31,7 @@
 
 .secondary {
   background-color: var(--white);
-  color: var(--text);
+  color: var(--dark-text);
   border: 1px solid #e5e5e5;
 }
 
@@ -42,7 +42,7 @@
 
 .outline {
   background-color: transparent;
-  color: var(--text);
+  color: var(--dark-text);
   border: 2px solid var(--primary-yellow);
 }
 
@@ -52,7 +52,7 @@
 
 .ghost {
   background-color: transparent;
-  color: var(--text);
+  color: var(--dark-text);
 }
 
 .ghost:hover {

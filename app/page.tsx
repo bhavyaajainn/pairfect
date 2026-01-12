@@ -2,11 +2,15 @@ import { Metadata } from 'next';
 import LandingPage from './components/LandingPage';
 
 export const metadata: Metadata = {
-  title: "Home | Pairfect - Find Your Perfect Match",
-  description: "Take fun relationship quizzes with friends and discover your compatibility score. Join Pairfect today to build deeper connections.",
+  title: "Pairfit – Relationship Compatibility & Emotional Matching Platform",
+  description: "Discover your relationship compatibility and emotional alignment with Pairfit. Take fun, expert-designed quizzes with partners and friends to build deeper connections.",
+  alternates: {
+    canonical: 'https://pairfit.in/',
+  },
   openGraph: {
-    title: "Pairfect | Discover Your Relationship Compatibility",
-    description: "Connect on a deeper level through interactive quizzes designed to reveal your perfect match.",
+    title: "Pairfit | Discover Your Relationship Compatibility",
+    description: "Connect on a deeper level through interactive quizzes designed to reveal your perfect match and emotional alignment.",
+    url: 'https://pairfit.in/',
   }
 };
 

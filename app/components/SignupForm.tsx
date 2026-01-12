@@ -37,6 +37,12 @@ const SignupForm: React.FC<SignupFormProps> = ({ onSwitchToLogin }) => {
       return;
     }
 
+    if (!supabase) {
+      setError('Connection to database failed. Please try again later.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase.auth.signUp({
         email,

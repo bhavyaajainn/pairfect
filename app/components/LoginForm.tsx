@@ -21,6 +21,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
     setLoading(true);
     setError('');
 
+    if (!supabase) {
+      setError('Connection to database failed. Please try again later.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -47,6 +53,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   };
 
   const handleGoogleLogin = async () => {
+    if (!supabase) {
+      setError('Connection to database failed. Please try again later.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -131,7 +142,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
           style={{ marginRight: '0.5rem' }}
           disabled={loading}
         />
-        <label htmlFor="keep-logged-in" style={{ fontSize: '0.875rem', color: '#666', cursor: 'pointer' }}>
+        <label htmlFor="keep-logged-in" style={{ fontSize: '0.875rem', color: 'var(--dark-text)', cursor: 'pointer' }}>
           Keep me logged in
         </label>
       </div>

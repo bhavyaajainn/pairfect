@@ -63,7 +63,7 @@
 
 .quizPreview {
   padding: 4rem 2rem;
-  background-color: var(--white);
+  background-color: var(--light-yellow);
 }
 
 .sectionTitle {
@@ -71,7 +71,7 @@
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 3rem;
-  color: var(--text);
+  color: var(--dark-text);
 }
 
 .grid {
@@ -138,5 +138,65 @@
 
   .heroContent {
     margin: 0 auto;
+  }
+}
+
+.seoSection {
+  padding: 6rem 2rem;
+  background-color: var(--light-yellow);
+  border-top: none;
+}
+
+.seoContainer {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.seoTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: var(--dark-text);
+  text-align: left;
+}
+
+.seoText {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #444;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.seoText p {
+  margin: 0;
+}
+
+.seoHighlight {
+  color: var(--primary-yellow);
+  font-weight: 700;
+}
+
+.seoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .seoSection {
+    padding: 4rem 1rem;
+  }
+  
+  .seoTitle {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  .seoGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { User } from '@supabase/supabase-js';
+import { User, AuthChangeEvent, Session } from '@supabase/supabase-js';
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -11,7 +11,7 @@ export function useAuth() {
   useEffect(() => {
     // Get initial session
     if (supabase) {
-      supabase.auth.getSession().then(({ data: { session } }: any) => {
+      supabase.auth.getSession().then(({ data: { session } }: { data: { session: Session | null } }) => {
         setUser(session?.user ?? null);
         setLoading(false);
       });
@@ -19,13 +19,14 @@ export function useAuth() {
       // Listen for auth changes
       const {
         data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
+      } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
         setUser(session?.user ?? null);
       });
 
       return () => subscription.unsubscribe();
     } else {
-      setLoading(false);
+      // Use Promise.resolve to avoid synchronous setState inside effect if flagged by strict rules
+      Promise.resolve().then(() => setLoading(false));
     }
   }, []);
 

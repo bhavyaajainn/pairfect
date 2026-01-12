@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
         <Link href="/privacy" className={styles.link}>Privacy & Terms</Link>
       </div>
       <div className={styles.copyright} suppressHydrationWarning>
-        © {new Date().getFullYear()} Pairfect. All rights reserved.
+        © {new Date().getFullYear()} Pairfit. All rights reserved.
       </div>
     </footer>
   );

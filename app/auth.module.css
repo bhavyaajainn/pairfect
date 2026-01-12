@@ -21,7 +21,7 @@
   font-weight: 800;
   text-align: center;
   margin-bottom: 2rem;
-  color: var(--text);
+  color: var(--dark-text);
 }
 
 .form {
@@ -39,7 +39,7 @@
 .label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text);
+  color: var(--dark-text);
 }
 
 .input {
@@ -49,6 +49,7 @@
   font-size: 1rem;
   transition: border-color 0.2s;
   outline: none;
+  color: var(--dark-text);
 }
 
 .input:focus {
@@ -60,7 +61,7 @@
   display: flex;
   align-items: center;
   margin: 1.5rem 0;
-  color: #888;
+  color: #444;
   font-size: 0.875rem;
 }
 
@@ -87,7 +88,7 @@
   text-align: center;
   margin-top: 1.5rem;
   font-size: 0.875rem;
-  color: #666;
+  color: var(--dark-text);
 }
 
 .link {
