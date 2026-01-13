@@ -12,9 +12,15 @@ import AuthModal from './AuthModal';
 import styles from '../page.module.css';
 
 export default function LandingPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
   const [isAuthModalOpen, setIsAuthModalOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (user && !loading) {
+      router.push('/dashboard');
+    }
+  }, [user, loading, router]);
 
   const quizzes = [
     { id: 'life_priorities', icon: <Scale size={32} />, title: 'Life Priorities', description: 'Drag and drop to rank life events and reveal your subconscious priorities.', href: '/quiz/life-priorities' },

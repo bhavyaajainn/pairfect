@@ -9,18 +9,19 @@ import { validateQuizLink, submitSharedResponse, getUserQuizResponse } from '@/l
 import { useNotification } from '@/app/context/NotificationContext';
 
 // Import quiz components
-import PartnerPreferencesQuiz from '../partner-preferences/page';
+// Import quiz components
+import PartnerPreferencesClient from '../partner-preferences/PartnerPreferencesClient';
 import LifePrioritiesClient from '../life-priorities/LifePrioritiesClient';
-import EmotionalCompatibilityQuiz from '../emotional-compatibility/page';
-import ConflictCommunicationQuiz from '../conflict-communication/page';
-import ResponsibilityReliabilityQuiz from '../responsibility-reliability/page';
+import EmotionalCompatibilityClient from '../emotional-compatibility/EmotionalCompatibilityClient';
+import ConflictCommunicationClient from '../conflict-communication/ConflictCommunicationClient';
+import ResponsibilityReliabilityClient from '../responsibility-reliability/ResponsibilityReliabilityClient';
 
 const QuizComponents: Record<string, any> = {
-  'partner_preferences': PartnerPreferencesQuiz,
+  'partner_preferences': PartnerPreferencesClient,
   'life_priorities': LifePrioritiesClient,
-  'emotional_compatibility': EmotionalCompatibilityQuiz,
-  'conflict_communication': ConflictCommunicationQuiz,
-  'responsibility_reliability': ResponsibilityReliabilityQuiz,
+  'emotional_compatibility': EmotionalCompatibilityClient,
+  'conflict_communication': ConflictCommunicationClient,
+  'responsibility_reliability': ResponsibilityReliabilityClient,
 };
 
 export default function SharedQuizClient({ token }: { token: string }) {

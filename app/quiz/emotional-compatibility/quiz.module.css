@@ -269,3 +269,124 @@
     font-size: 1.1rem;
   }
 }
+
+/* Details Page Styles */
+.detailsView {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 3rem;
+  background: var(--white);
+  border-radius: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.detailsIcon {
+  color: var(--primary-yellow);
+  margin-bottom: 1.5rem;
+}
+
+.detailsTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+}
+
+.detailsDescription {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.detailsInfoGrid {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--dark-text);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.detailsSection {
+  text-align: left;
+  width: 100%;
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.detailsSection h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  color: var(--dark-text);
+}
+
+.detailsList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detailsList li {
+  position: relative;
+  padding-left: 1.5rem;
+  line-height: 1.6;
+  color: #444;
+}
+
+.detailsList li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--primary-yellow);
+  font-weight: bold;
+}
+
+.detailsActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.startBtn {
+  min-width: 250px;
+}
+
+.loginHint {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+@media (max-width: 640px) {
+  .detailsView {
+    padding: 2rem 1.5rem;
+    margin: 1.5rem 1rem;
+    border-radius: 1.5rem;
+  }
+
+  .detailsTitle {
+    font-size: 1.8rem;
+  }
+
+  .detailsInfoGrid {
+    gap: 1rem;
+  }
+}

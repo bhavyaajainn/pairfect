@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
 import { useNotification } from '@/app/context/NotificationContext';
@@ -14,6 +15,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = () => {
   const { user, loading } = useAuth();
+  const router = useRouter();
   const { showAlert, showConfirm } = useNotification();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'signup'>('login');
@@ -45,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = () => {
   const handleLogout = async () => {
     await supabase?.auth?.signOut();
     setShowDropdown(false);
-    window.location.href = '/';
+    router.push('/');
   };
 
 

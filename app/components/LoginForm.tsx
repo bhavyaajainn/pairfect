@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Button from './Button';
 import { supabase } from '@/lib/supabase';
 import styles from '../auth.module.css';
@@ -15,6 +16,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +46,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
       }
 
       // Redirect to dashboard on success
-      window.location.href = '/dashboard';
+      router.push('/dashboard');
     } catch (error: any) {
       setError(error.message || 'Failed to login');
     } finally {
@@ -65,7 +67,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/auth/callback`,
         }
       });
 
