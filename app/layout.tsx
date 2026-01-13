@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Pairfit | Relationship Compatibility Quizzes",
     description: "Discover your compatibility score and connect on a Deeper level through play.",
-    url: "https://pairfit.app",
+    url: "https://pairfit.in",
     siteName: "Pairfit",
     images: [
       {

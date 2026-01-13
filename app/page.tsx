@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import LandingPage from './components/LandingPage';
 
 export const metadata: Metadata = {
-  title: "Pairfit – Relationship Compatibility & Emotional Matching Platform",
+  title: "Pairfit | Find Your Perfect Match – Relationship Compatibility & Emotional Matching",
   description: "Discover your relationship compatibility and emotional alignment with Pairfit. Take fun, expert-designed quizzes with partners and friends to build deeper connections.",
   alternates: {
     canonical: 'https://pairfit.in/',

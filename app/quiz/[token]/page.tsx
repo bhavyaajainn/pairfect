@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           height: 1200,
           alt: 'Pairfit'
         }],
-        url: `https://pairfit.app/quiz/${token}`,
+        url: `https://pairfit.in/quiz/${token}`,
       },
       twitter: {
         card: "summary_large_image",
