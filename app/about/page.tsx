@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import styles from './about.module.css';
 
 export const metadata: Metadata = {
-  title: "About Us",
+  title: "About Pairfit",
   description: "Learn more about Pairfit and our mission to help couples and friends connect on a deeper level through interactive quizzes.",
 };
 

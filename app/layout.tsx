@@ -66,6 +66,74 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Pairfit",
+                "url": "https://pairfit.in",
+                "logo": "https://pairfit.in/icon.png"
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Pairfit",
+                "url": "https://pairfit.in",
+                "potentialAction": {
+                  "@type": "SearchAction",
+                  "target": "https://pairfit.in/dashboard?search={search_term_string}",
+                  "query-input": "required name=search_term_string"
+                }
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "name": "Sitelinks",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Emotional Compatibility Quiz",
+                    "url": "https://pairfit.in/quiz/emotional-compatibility"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "About Pairfit",
+                    "url": "https://pairfit.in/about"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": "Contact",
+                    "url": "https://pairfit.in/contact"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 4,
+                    "name": "Start Quiz",
+                    "url": "https://pairfit.in/start-quiz"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 5,
+                    "name": "Life Priorities Quiz",
+                    "url": "https://pairfit.in/quiz/life-priorities"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 6,
+                    "name": "Conflict & Communication Quiz",
+                    "url": "https://pairfit.in/quiz/conflict-communication"
+                  }
+                ]
+              }
+            ])
+          }}
+        />
         <ErrorBoundary>
           <NotificationProvider>
             <Navbar />
