@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://pairfit.in'),
   title: {
     default: "Pairfit | Find Your Perfect Match through Fun Quizzes",
     template: "%s | Pairfit"
@@ -30,9 +31,9 @@ export const metadata: Metadata = {
     siteName: "Pairfit",
     images: [
       {
-        url: "https://res.cloudinary.com/di81jpl3e/image/upload/v1767365500/share-poster_nljhm9.jpg",
+        url: "/share-poster.png",
         width: 1200,
-        height: 630,
+        height: 1200,
         alt: "Pairfit - Connect on a deeper level",
       },
     ],
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Pairfit | Find Your Perfect Match",
     description: "Take fun quizzes with friends and discover your compatibility score.",
-    images: ["https://res.cloudinary.com/di81jpl3e/image/upload/v1767365500/share-poster_nljhm9.jpg"],
+    images: ["/share-poster.png"],
   },
   robots: {
     index: true,

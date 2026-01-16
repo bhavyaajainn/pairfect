@@ -76,11 +76,7 @@ export default function PartnerPreferencesClient({ isShared, onComplete, respond
       if (user) {
         setSaving(true);
         try {
-          const formattedAnswers = Object.entries(newAnswers).map(([questionId, choice]) => ({
-            category: QUESTIONS.find(q => q.id === parseInt(questionId))?.category || 'Unknown',
-            choice: choice
-          }));
-          await saveQuizResponse(user.id, 'partner_preferences', formattedAnswers);
+          await saveQuizResponse(user.id, 'partner_preferences', newAnswers);
         } catch (error) {
           console.error('Error saving quiz response:', error);
         } finally {

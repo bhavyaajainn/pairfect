@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { PARTNER_PREFERENCES_QUESTIONS } from './quizData';
 
 export interface QuizResponse {
   userId: string;
@@ -278,6 +279,20 @@ export async function submitSharedResponse(
   // 2. Calculate match percentage
   let calculatedMatch = 0;
   const creatorAnswers = creatorResponse.answers;
+
+  // Normalize creator answers for partner_preferences if it's an array (Legacy format support)
+  let normalizedCreatorAnswers = creatorAnswers;
+  if (linkData.quiz_id === 'partner_preferences' && Array.isArray(creatorAnswers)) {
+    console.log('Normalizing legacy array answers for partner_preferences');
+    normalizedCreatorAnswers = {};
+    creatorAnswers.forEach((ans: any, idx: number) => {
+      // Find question by category
+      const q = PARTNER_PREFERENCES_QUESTIONS.find((q: any) => q.category === ans.category);
+      if (q) {
+        normalizedCreatorAnswers[q.id] = ans.choice;
+      }
+    });
+  }
   
   if (linkData.quiz_id === 'life_priorities') {
     // For life priorities, we compare the order
@@ -302,9 +317,9 @@ export async function submitSharedResponse(
     // For other quizzes (key-value pairs)
     let matches = 0;
     let total = 0;
-    for (const key in creatorAnswers) {
+    for (const key in normalizedCreatorAnswers) {
       total++;
-      if (creatorAnswers[key] === answers[key]) matches++;
+      if (normalizedCreatorAnswers[key] === answers[key]) matches++;
     }
     calculatedMatch = Math.round((matches / total) * 100);
   }
