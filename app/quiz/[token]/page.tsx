@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: `Take the ${quizTitle} on Pairfit!`,
         description: `Connect on a deeper level through play.`,
         images: [{
-          url: '/share-poster.png',
+          url: 'https://res.cloudinary.com/di81jpl3e/image/upload/v1768581292/share-poster_dlgeng.jpg',
           width: 1200,
           height: 1200,
           alt: 'Pairfit'
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         card: "summary_large_image",
         title: `Take the ${quizTitle} on Pairfit!`,
         description: `Connect on a deeper level through play.`,
-        images: ['/share-poster.png'],
+        images: ['https://res.cloudinary.com/di81jpl3e/image/upload/v1768581292/share-poster_dlgeng.jpg'],
       }
     };
   } catch (error) {

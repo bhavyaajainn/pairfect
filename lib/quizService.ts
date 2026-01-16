@@ -114,6 +114,21 @@ export async function getNamedQuizResponses(quizId: string) {
  */
 export async function deleteNamedQuizResponse(id: string) {
   if (!supabase) throw new Error("Supabase client not initialized");
+
+  // 1. Get the response first to find the link_token
+  const { data: responseData, error: fetchError } = await supabase
+    .from('named_quiz_responses')
+    .select('link_token')
+    .eq('id', id)
+    .single();
+
+  if (fetchError) {
+    console.error('Error fetching named response for deletion:', fetchError);
+    // Continue nicely ? or throw? Let's throw to handle upstream
+    throw fetchError; 
+  }
+
+  // 2. Delete the response
   const { error } = await supabase
     .from('named_quiz_responses')
     .delete()
@@ -122,6 +137,20 @@ export async function deleteNamedQuizResponse(id: string) {
   if (error) {
     console.error('Error deleting named response:', error);
     throw error;
+  }
+
+  // 3. Delete the associated Link if it exists
+  if (responseData && responseData.link_token) {
+    const { error: linkError } = await supabase
+      .from('quiz_links')
+      .delete()
+      .eq('token', responseData.link_token);
+
+    if (linkError) {
+      console.error('Error deleting associated quiz link:', linkError);
+      // We don't throw here strictly, as the primary goal (deleting the match) succeeded.
+      // But logging is good.
+    }
   }
 }
 
