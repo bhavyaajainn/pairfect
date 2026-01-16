@@ -28,6 +28,13 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
+
   // URL to redirect to after sign in process completes
-  return NextResponse.redirect(`${requestUrl.origin}/dashboard`);
+  // Force localhost redirect when running locally
+  const isLocalhost = requestUrl.origin.includes('localhost') || requestUrl.origin.includes('127.0.0.1');
+  const redirectUrl = isLocalhost 
+    ? 'http://localhost:3000/dashboard'
+    : `${requestUrl.origin}/dashboard`;
+  
+  return NextResponse.redirect(redirectUrl);
 }

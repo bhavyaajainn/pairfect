@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import { Scale, HeartHandshake, MessageCircle } from 'lucide-react';
+import { Scale, HeartHandshake, MessageCircle, Activity, Plane, Sparkles } from 'lucide-react';
 import Footer from './Footer';
 import Button from './Button';
 import Card from './Card';
@@ -26,6 +26,9 @@ export default function LandingPage() {
     { id: 'life_priorities', icon: <Scale size={32} />, title: 'Life Priorities', description: 'Drag and drop to rank life events and reveal your subconscious priorities.', href: '/quiz/life-priorities' },
     { id: 'emotional_compatibility', icon: <HeartHandshake size={32} />, title: 'Emotional Compatibility', description: 'See how you emotionally respond to different situations.', href: '/quiz/emotional-compatibility' },
     { id: 'conflict_communication', icon: <MessageCircle size={32} />, title: 'Conflict & Communication', description: 'Understand how you handle disagreement and communication.', href: '/quiz/conflict-communication' },
+    { id: 'mood_spectrum', icon: <Activity size={32} />, title: 'Mood Spectrum', description: 'Rate your emotional intensity across 10 different mood categories.', href: '/quiz/mood-spectrum' },
+    { id: 'travel_planner', icon: <Plane size={32} />, title: 'Travel Itinerary Planner', description: 'Plan your dream vacation with custom budget and detailed itinerary.', href: '/quiz/travel-planner' },
+    { id: 'dream_life', icon: <Sparkles size={32} />, title: 'Dream Life Designer', description: 'Create a visual mood board of your ideal lifestyle across 6 categories.', href: '/quiz/dream-life' },
   ];
 
   const handleAction = (href: string) => {

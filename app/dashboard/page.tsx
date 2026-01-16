@@ -62,7 +62,7 @@ export default function DashboardPage() {
       icon: <MessageCircle size={24} />, 
       title: 'Conflict & Communication', 
       description: 'Understand how you handle disagreement and communication.', 
-      questions: '10 questions',
+      questions: '5 questions',
       href: '/quiz/conflict-communication'
     },
     {
@@ -81,6 +81,33 @@ export default function DashboardPage() {
       icon: <Users size={24} />,
       questions: "10 choices",
       href: '/quiz/partner-preferences',
+      color: "bg-pink-100 text-pink-600"
+    },
+    {
+      id: 'mood_spectrum',
+      title: "Mood Spectrum",
+      description: "Rate your emotional intensity across 10 different mood categories.",
+      icon: <Heart size={24} />,
+      questions: "10 emotions",
+      href: '/quiz/mood-spectrum',
+      color: "bg-purple-100 text-purple-600"
+    },
+    {
+      id: 'travel_planner',
+      title: "Travel Itinerary Planner",
+      description: "Plan your dream vacation with custom budget and detailed itinerary.",
+      icon: <Plane size={24} />,
+      questions: "7 steps",
+      href: '/quiz/travel-planner',
+      color: "bg-blue-100 text-blue-600"
+    },
+    {
+      id: 'dream_life',
+      title: "Dream Life Designer",
+      description: "Create a visual mood board of your ideal lifestyle across 6 categories.",
+      icon: <Sparkles size={24} />,
+      questions: "6 categories",
+      href: '/quiz/dream-life',
       color: "bg-pink-100 text-pink-600"
     }
   ];

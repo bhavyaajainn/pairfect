@@ -64,10 +64,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignup }) => {
     setError('');
 
     try {
+      // Force localhost redirect when running locally
+      const isLocalhost = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1');
+      const redirectTo = isLocalhost 
+        ? 'http://localhost:3000/auth/callback'
+        : `${window.location.origin}/auth/callback`;
+      
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo,
         }
       });
 
