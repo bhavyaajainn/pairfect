@@ -15,6 +15,9 @@ import LifePrioritiesClient from '../life-priorities/LifePrioritiesClient';
 import EmotionalCompatibilityClient from '../emotional-compatibility/EmotionalCompatibilityClient';
 import ConflictCommunicationClient from '../conflict-communication/ConflictCommunicationClient';
 import ResponsibilityReliabilityClient from '../responsibility-reliability/ResponsibilityReliabilityClient';
+import MoodSpectrumClient from '../mood-spectrum/MoodSpectrumClient';
+import TravelPlannerClient from '../travel-planner/TravelPlannerClient';
+import DreamLifeClient from '../dream-life/DreamLifeClient';
 
 const QuizComponents: Record<string, any> = {
   'partner_preferences': PartnerPreferencesClient,
@@ -22,6 +25,9 @@ const QuizComponents: Record<string, any> = {
   'emotional_compatibility': EmotionalCompatibilityClient,
   'conflict_communication': ConflictCommunicationClient,
   'responsibility_reliability': ResponsibilityReliabilityClient,
+  'mood_spectrum': MoodSpectrumClient,
+  'travel_planner': TravelPlannerClient,
+  'dream_life': DreamLifeClient,
 };
 
 export default function SharedQuizClient({ token }: { token: string }) {
@@ -104,7 +110,7 @@ export default function SharedQuizClient({ token }: { token: string }) {
       if (err.message?.includes('already been submitted')) {
         setCompleted(true);
       } else {
-        console.error('Error saving response:', err);
+        console.error('Error saving response:', JSON.stringify(err, null, 2));
         showAlert('Error', 'We couldn\'t save your response. Please try again.');
       }
     }
@@ -174,6 +180,11 @@ export default function SharedQuizClient({ token }: { token: string }) {
   };
 
   const normalizedQuizId = (linkData.quiz_id || '').replace(/-/g, '_');
+  console.log('SharedQuizClient Debug:', { 
+    rawQuizId: linkData.quiz_id, 
+    normalizedQuizId, 
+    availableKeys: Object.keys(QuizComponents) 
+  });
   const SelectedQuiz = QuizComponents[normalizedQuizId];
 
   if (!SelectedQuiz) {

@@ -115,10 +115,10 @@ export async function getNamedQuizResponses(quizId: string) {
 export async function deleteNamedQuizResponse(id: string) {
   if (!supabase) throw new Error("Supabase client not initialized");
 
-  // 1. Get the response first to find the link_token
+  // 1. Get the response first to find the link_token and details
   const { data: responseData, error: fetchError } = await supabase
     .from('named_quiz_responses')
-    .select('link_token')
+    .select('link_token, quiz_id, respondent_name')
     .eq('id', id)
     .single();
 
@@ -139,17 +139,37 @@ export async function deleteNamedQuizResponse(id: string) {
     throw error;
   }
 
-  // 3. Delete the associated Link if it exists
-  if (responseData && responseData.link_token) {
-    const { error: linkError } = await supabase
-      .from('quiz_links')
-      .delete()
-      .eq('token', responseData.link_token);
+  // 3. Delete the associated Link securely
+  // Strategy: Try by token first, if that fails or returns 0 rows, try by composite key
+  if (responseData) {
+    let deleted = false;
 
-    if (linkError) {
-      console.error('Error deleting associated quiz link:', linkError);
-      // We don't throw here strictly, as the primary goal (deleting the match) succeeded.
-      // But logging is good.
+    if (responseData.link_token) {
+      const { error: linkError, count } = await supabase
+        .from('quiz_links')
+        .delete({ count: 'exact' })
+        .eq('token', responseData.link_token);
+
+      if (linkError) {
+        console.error('Error deleting associated quiz link by token:', linkError);
+      } else if (count && count > 0) {
+        deleted = true;
+      }
+    }
+    
+    // Fallback: Delete by quiz_id and respondent_name (RLS will ensure it's only for this user)
+    // We only do this if token deletion didn't confirm a delete, just to be safe.
+    if (!deleted && responseData.quiz_id && responseData.respondent_name) {
+       console.log('Attempting fallback delete of quiz link by name/quiz...');
+       const { error: fallbackError } = await supabase
+        .from('quiz_links')
+        .delete()
+        .eq('quiz_id', responseData.quiz_id)
+        .eq('respondent_name', responseData.respondent_name);
+        
+       if (fallbackError) {
+         console.error('Fallback link deletion failed:', fallbackError);
+       }
     }
   }
 }
@@ -216,7 +236,7 @@ export async function createQuizLink(quizId: string, respondentName: string, use
     });
 
   if (responseError) {
-    console.error('Error pre-inserting response:', responseError);
+    console.error('Error pre-inserting response:', JSON.stringify(responseError, null, 2));
     // We don't throw here to avoid breaking the link creation if the response insert fails
   }
 
@@ -249,6 +269,14 @@ export async function validateQuizLink(token: string) {
   const hasAnswers = responseData && responseData.answers && Object.keys(responseData.answers).length > 0;
   const alreadySubmitted = !!hasAnswers;
 
+  // Fetch creator's answers to show in comparison
+  const { data: creatorResponse } = await supabase
+    .from('quiz_responses')
+    .select('answers')
+    .eq('user_id', data.created_by)
+    .eq('quiz_id', data.quiz_id)
+    .maybeSingle();
+
   if (alreadySubmitted) {
     return { 
       valid: false, 
@@ -256,6 +284,7 @@ export async function validateQuizLink(token: string) {
       data,
       alreadySubmitted: true,
       respondentAnswers: responseData.answers,
+      creatorAnswers: creatorResponse?.answers || {},
       creatorId: data.created_by
     };
   }
@@ -366,7 +395,7 @@ export async function submitSharedResponse(
     .single();
 
   if (error) {
-    console.error('Submission Error:', error);
+    console.error('Submission Error:', JSON.stringify(error, null, 2));
     throw error;
   }
   return { success: true, data };

@@ -62,7 +62,7 @@ export default function ComparisonView({
 
     return (
       <div className={styles.taskGrid}>
-        {tasks.map(task => {
+        {tasks.map((task: any) => {
           const creatorPicked = creatorSet.has(task.id);
           const respondentPicked = respondentSet.has(task.id);
           const isMatch = creatorPicked === respondentPicked;
@@ -83,6 +83,127 @@ export default function ComparisonView({
             </div>
           );
         })}
+      </div>
+    );
+  }
+
+  if (quizId === 'travel_planner') {
+    // Helper to format currency
+    const formatMoney = (amount: number) => `₹${amount.toLocaleString()}`;
+    // Helper to format text
+    const formatText = (text: string) => text.replace(/([A-Z])/g, ' $1').trim(); // camelCase to human readable
+
+    const sections = [
+      {
+        title: 'Trip Basics',
+        items: [
+          { label: 'Budget', c: formatMoney(creatorAnswers.budget), r: formatMoney(respondentAnswers.budget) },
+          { label: 'Duration', c: `${creatorAnswers.duration} Days`, r: `${respondentAnswers.duration} Days` },
+          { label: 'Total Cost', c: formatMoney(creatorAnswers.totalCost), r: formatMoney(respondentAnswers.totalCost) },
+        ]
+      },
+      {
+        title: 'Preferences',
+        items: [
+          { label: 'Flight Class', c: formatText(creatorAnswers.flightClass), r: formatText(respondentAnswers.flightClass) },
+          { label: 'Meal Plan', c: formatText(creatorAnswers.mealPlan), r: formatText(respondentAnswers.mealPlan) },
+        ]
+      }
+    ];
+
+    // Activity comparison
+    console.log('ComparisonView Debug:', {
+      cActivities: creatorAnswers.selectedActivities,
+      rActivities: respondentAnswers.selectedActivities,
+      cKeys: Object.keys(creatorAnswers)
+    });
+
+    const cActivities = new Set(creatorAnswers.selectedActivities || []);
+    const rActivities = new Set(respondentAnswers.selectedActivities || []);
+    const allActivities = Array.from(new Set([...cActivities, ...rActivities]));
+
+    return (
+      <div className={styles.travelComparison}>
+        {/* Metrics Grid */}
+        <div className={styles.metricsGrid}>
+          {sections.map(section => (
+            <div key={section.title} className={styles.metricSection}>
+              <h4 className={styles.metricTitle}>{section.title}</h4>
+              {section.items.map(item => {
+                const isMatch = item.c === item.r;
+                return (
+                  <div key={item.label} className={`${styles.metricRow} ${isMatch ? styles.matchRow : ''}`}>
+                    <span className={styles.metricLabel}>{item.label}</span>
+                    <div className={styles.metricValues}>
+                      <div className={styles.metricValue}>
+                        <span className={styles.who}>{creatorLabel}</span>
+                        <span>{item.c}</span>
+                      </div>
+                      <div className={styles.metricValue}>
+                        <span className={styles.who}>{rLabel}</span>
+                        <span>{item.r}</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        {/* Hotel Breakdown */}
+        <div className={styles.metricSection}>
+          <h4 className={styles.metricTitle}>Hotel Nights Allocation</h4>
+          <div className={styles.hotelComparison}>
+            {['threeStar', 'fourStar', 'fiveStar'].map(star => {
+              const starLabel = star === 'threeStar' ? '3-Star' : star === 'fourStar' ? '4-Star' : '5-Star';
+              const cNights = creatorAnswers.hotelNights[star] || 0;
+              const rNights = respondentAnswers.hotelNights[star] || 0;
+              const isMatch = cNights === rNights;
+
+              return (
+                <div key={star} className={`${styles.metricRow} ${isMatch ? styles.matchRow : ''}`}>
+                  <span className={styles.metricLabel}>{starLabel}</span>
+                  <div className={styles.metricValues}>
+                    <div className={styles.metricValue}>
+                      <span className={styles.who}>{creatorLabel}</span>
+                      <span>{cNights}n</span>
+                    </div>
+                    <div className={styles.metricValue}>
+                      <span className={styles.who}>{rLabel}</span>
+                      <span>{rNights}n</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Activities */}
+        <div className={styles.metricSection}>
+          <h4 className={styles.metricTitle}>Proposed Activities</h4>
+          <div className={styles.activitiesList}>
+            {allActivities.map((act: any) => {
+              const cSelected = cActivities.has(act);
+              const rSelected = rActivities.has(act);
+              const isMatch = cSelected && rSelected;
+              
+              if (!cSelected && !rSelected) return null;
+
+              return (
+                <div key={act} className={`${styles.activityRow} ${isMatch ? styles.match : ''}`}>
+                  <span className={styles.activityName}>{act}</span>
+                  <div className={styles.activityStatus}>
+                     {cSelected && <span className={styles.personBadge}>{creatorLabel}</span>}
+                     {rSelected && <span className={styles.personBadge}>{rLabel}</span>}
+                     {isMatch && <Check size={16} className={styles.matchIcon} />}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     );
   }

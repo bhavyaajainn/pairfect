@@ -158,3 +158,137 @@
     gap: 1rem;
   }
 }
+
+
+/* Travel Planner Comparison Styles */
+.travelComparison {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.metricSection {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.metricTitle {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #6b7280;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.metricRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed #f3f4f6;
+}
+
+.metricRow:last-child {
+  border-bottom: none;
+}
+
+.matchRow {
+  background-color: #f0fdf4;
+  margin: 0 -1rem;
+  padding: 0.75rem 1rem;
+}
+
+.metricLabel {
+  font-size: 0.9rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.metricValues {
+  display: flex;
+  gap: 1.5rem;
+  text-align: right;
+}
+
+.metricValue {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.who {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 0.1rem;
+}
+
+.metricValue span:last-child {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.95rem;
+}
+
+.hotelComparison {
+  display: flex;
+  flex-direction: column;
+}
+
+.activitiesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 0.75rem;
+}
+
+.activityRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.activityRow.match {
+  background: #ecfdf5;
+  border-color: #10b981;
+}
+
+.activityName {
+  font-weight: 500;
+  color: #374151;
+}
+
+.activityStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.personBadge {
+  font-size: 0.65rem;
+  background: #e5e7eb;
+  color: #4b5563;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.activityRow.match .personBadge {
+  background: #d1fae5;
+  color: #059669;
+}
