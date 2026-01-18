@@ -85,6 +85,74 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
 
     let animationFrameId: number;
 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Prevent scrolling for game keys
+      if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+        e.preventDefault();
+      }
+
+      const update: Partial<InputState> = {};
+      
+      // KEY MAPPING LOGIC
+      // JUMP = Up OR Left (depending on role availability)
+      // CROUCH = Down OR Right (depending on role availability)
+
+      if (role === 'HORIZONTAL') {
+        // I control Left/Right Movement
+        if (e.key === 'ArrowLeft') update.left = true;
+        if (e.key === 'ArrowRight') update.right = true;
+        
+        // So I use Up/Down for Actions
+        if (e.key === 'ArrowUp') update.jump = true;
+        if (e.key === 'ArrowDown') update.crouch = true;
+      } 
+      else if (role === 'VERTICAL') {
+        // I control Up/Down Movement
+        if (e.key === 'ArrowUp') update.up = true;
+        if (e.key === 'ArrowDown') update.down = true;
+
+        // So I use Left/Right for Actions
+        if (e.key === 'ArrowLeft') update.jump = true;
+        if (e.key === 'ArrowRight') update.crouch = true;
+      }
+      
+      // Universal Keys
+      if (e.key === ' ') update.jump = true;
+      if (e.key === 'Shift') update.crouch = true;
+
+      if (Object.keys(update).length > 0) {
+        localInput.current = { ...localInput.current, ...update };
+        onInput(localInput.current);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      const update: Partial<InputState> = {};
+      
+      if (role === 'HORIZONTAL') {
+        if (e.key === 'ArrowLeft') update.left = false;
+        if (e.key === 'ArrowRight') update.right = false;
+        if (e.key === 'ArrowUp') update.jump = false;
+        if (e.key === 'ArrowDown') update.crouch = false;
+      } else if (role === 'VERTICAL') {
+        if (e.key === 'ArrowUp') update.up = false;
+        if (e.key === 'ArrowDown') update.down = false;
+        if (e.key === 'ArrowLeft') update.jump = false;
+        if (e.key === 'ArrowRight') update.crouch = false;
+      }
+      
+      if (e.key === ' ') update.jump = false;
+      if (e.key === 'Shift') update.crouch = false;
+
+      if (Object.keys(update).length > 0) {
+        localInput.current = { ...localInput.current, ...update };
+        onInput(localInput.current);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
     const checkCollision = (nextX: number, nextY: number, jumping: boolean, crouching: boolean) => {
         // ... (keep collision logic)
         const pLeft = nextX;
@@ -238,11 +306,12 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
       
       // Tutorial Hints
       ctx.textAlign = 'left';
-      const jumpKey = role === 'HORIZONTAL' ? '▲' : '◀';
-      const crouchKey = role === 'HORIZONTAL' ? '▼' : '▶';
+      // Simplified labels to match the "Top/Left = Jump" mental model
+      const jumpKey = role === 'HORIZONTAL' ? '▲ (Up)' : '◀ (Left)';
+      const crouchKey = role === 'HORIZONTAL' ? '▼ (Down)' : '▶ (Right)';
 
-      ctx.fillText(`🟧 JUMP: ${jumpKey} / SPACE`, 20, WORLD_HEIGHT - 15);
-      ctx.fillText(`🟦 CROUCH: ${crouchKey} / SHIFT`, 220, WORLD_HEIGHT - 15);
+      ctx.fillText(`🟧 JUMP: ${jumpKey}`, 20, WORLD_HEIGHT - 15);
+      ctx.fillText(`🟦 CROUCH: ${crouchKey}`, 220, WORLD_HEIGHT - 15);
 
       animationFrameId = requestAnimationFrame(render);
     };

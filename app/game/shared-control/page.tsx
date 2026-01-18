@@ -97,8 +97,9 @@ export default function SharedControlLobby() {
            <h3>How to Play</h3>
            <ul>
              <li>Need 2 Players on separate devices.</li>
-             <li><strong>Player A</strong> controls Horizontal (Left/Right).</li>
-             <li><strong>Player B</strong> controls Vertical (Up/Down).</li>
+             <li><strong>Player A:</strong> Moves Left/Right. (Jump with Up, Crouch with Down)</li>
+             <li><strong>Player B:</strong> Moves Up/Down. (Jump with Left, Crouch with Right)</li>
+             <li><strong>Rule:</strong> Any 'Top' or 'Left' key = JUMP. Any 'Bottom' or 'Right' key = CROUCH.</li>
              <li>Coordinate to reach the target!</li>
            </ul>
         </div>
