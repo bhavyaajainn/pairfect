@@ -19,7 +19,7 @@ export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
   const { showAlert, showConfirm } = useNotification();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'quizzes' | 'matches'>('quizzes');
+  const [activeTab, setActiveTab] = useState<'quizzes' | 'matches' | 'game'>('quizzes');
   const [completedQuizzes, setCompletedQuizzes] = useState<Set<string>>(new Set());
   const [matches, setMatches] = useState<any[]>([]);
   const [filters, setFilters] = useState({
@@ -215,6 +215,12 @@ export default function DashboardPage() {
             Quizzes
           </button>
           <button 
+            className={`${styles.tab} ${activeTab === 'game' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('game')}
+          >
+            Games
+          </button>
+          <button 
             className={`${styles.tab} ${activeTab === 'matches' ? styles.activeTab : ''}`}
             onClick={() => setActiveTab('matches')}
           >
@@ -224,7 +230,16 @@ export default function DashboardPage() {
       </div>
 
       <main className={styles.content}>
-        {activeTab === 'quizzes' ? (
+        {activeTab === 'game' ? (
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>🎮</div>
+            <h2>One Screen, Two Controls</h2>
+            <p>A cooperative coordination game.</p>
+            <Link href="/game/shared-control">
+              <Button>Play Now</Button>
+            </Link>
+          </div>
+        ) : activeTab === 'quizzes' ? (
           <div className={styles.grid}>
             {quizzes.map((quiz) => {
               const isCompleted = completedQuizzes.has(quiz.id);

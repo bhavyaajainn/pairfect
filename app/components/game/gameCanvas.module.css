@@ -1,0 +1,54 @@
+.mazeWrapper {
+  padding: 20px;
+  background: #e5e7eb; /* Light grey background like screenshot */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+
+.gridContainer {
+  display: grid;
+  background-color: #f3f4f6;
+  border: 4px solid #1f2937; /* Dark border */
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.wall {
+  background-color: #1f2937; /* Dark walls */
+}
+
+.floor {
+  background-color: #f3f4f6; /* Light floor */
+  /* Do not add borders to floor cells for that clean maze look */
+}
+
+.player {
+  width: 70%;
+  height: 70%;
+  border-radius: 4px; /* Slightly squared like 8-bit characters */
+  position: absolute;
+  z-index: 10;
+  transition: all 0.1s linear;
+}
+
+.me {
+  background-color: #3b82f6;
+  border: 2px solid #1e3a8a;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.other {
+  background-color: #10b981;
+  border: 2px solid #064e3b;
+  opacity: 0.8;
+}
+
+.openedDoor {
+  opacity: 0.3;
+}

@@ -1,0 +1,293 @@
+.container {
+  min-height: 100vh;
+  background-color: #0f172a; /* Deeper navy/slate */
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.loading {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: monospace;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  animation: pulse 2s infinite;
+}
+
+.waitingCard {
+  margin: auto;
+  background: white;
+  color: #1f2937;
+  padding: 3rem;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.waitingIcon {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: #fbbf24;
+}
+
+.pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid #fbbf24;
+  opacity: 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.roomCode {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 12px;
+  font-family: monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 1.5rem 0;
+  border: 2px dashed #e5e7eb;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  transition: all 0.2s;
+  letter-spacing: 0.1em;
+}
+
+.roomCode:hover {
+  background: #fffbeb;
+  border-color: #fbbf24;
+  color: #d97706;
+}
+
+.hint {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* Header */
+.header {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.headerLeft {
+  display: flex;
+  gap: 1rem;
+}
+
+.roomBadge,
+.roleBadge {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.roleBadge {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+/* Game Area */
+.gameArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 2rem;
+  position: relative;
+}
+
+.controls {
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.signalButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.signalBtn {
+  min-width: 100px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  transition: all 0.2s ease !important;
+}
+
+.signalBtn:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: white !important;
+}
+
+.signalBtn:active {
+  transform: translateY(0);
+}
+
+.voiceSection {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  border-radius: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.voiceIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: #4ade80;
+  font-size: 0.95rem;
+}
+
+.micIcon {
+  width: 32px;
+  height: 32px;
+  background: rgba(74, 222, 128, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.instruction {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* Signal Overlay */
+.signalOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  pointer-events: none;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.signalText {
+  font-size: 4rem;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.8);
+  padding: 1rem 3rem;
+  border-radius: 1rem;
+  border: 2px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+}
+
+/* HUD */
+.stats {
+  font-family: monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.urgent {
+  color: #ef4444;
+  border-color: #ef4444;
+  animation: pulse 1s infinite;
+}
+
+/* Overlays */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.overlay h1 {
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fbbf24;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+}
+
+.overlay p {
+  font-size: 1.2rem;
+  color: #d1d5db;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
