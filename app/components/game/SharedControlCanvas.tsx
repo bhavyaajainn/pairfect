@@ -474,36 +474,36 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
                 {/* UP */}
                 <div className={styles.dpadRow}>
                     <button 
-                        className={`${styles.touchBtn} ${role === 'HORIZONTAL' ? styles.actionBtn : ''}`}
+                        className={`${styles.touchBtn} ${role === 'HORIZONTAL' || role === 'VERTICAL' /** Highlight Action for H, Move for V */ ? '' : ''}`}
                         onTouchStart={(e) => { e.preventDefault(); handleTouchStart('up'); }}
                         onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('up'); }}
-                    >{role === 'HORIZONTAL' ? 'JUMP' : '▲'}</button>
+                    >▲</button>
                 </div>
                 
                 {/* LEFT / RIGHT */}
                 <div className={styles.dpadRow}>
                     <button 
-                        className={`${styles.touchBtn} ${role === 'VERTICAL' ? styles.actionBtn : ''}`}
+                        className={styles.touchBtn}
                         onTouchStart={(e) => { e.preventDefault(); handleTouchStart('left'); }}
                         onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('left'); }}
-                    >{role === 'VERTICAL' ? 'JUMP' : '◀'}</button>
+                    >◀</button>
 
                     <div className={styles.dpadSpacer} />
 
                     <button 
-                        className={`${styles.touchBtn} ${role === 'VERTICAL' ? styles.crouchBtn : ''}`}
+                        className={styles.touchBtn}
                         onTouchStart={(e) => { e.preventDefault(); handleTouchStart('right'); }}
                         onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('right'); }}
-                    >{role === 'VERTICAL' ? 'CROUCH' : '▶'}</button>
+                    >▶</button>
                 </div>
 
                 {/* DOWN */}
                 <div className={styles.dpadRow}>
                      <button 
-                        className={`${styles.touchBtn} ${role === 'HORIZONTAL' ? styles.crouchBtn : ''}`}
+                        className={styles.touchBtn}
                         onTouchStart={(e) => { e.preventDefault(); handleTouchStart('down'); }}
                         onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('down'); }}
-                    >{role === 'HORIZONTAL' ? 'CROUCH' : '▼'}</button>
+                    >▼</button>
                 </div>
             </div>
          </div>
