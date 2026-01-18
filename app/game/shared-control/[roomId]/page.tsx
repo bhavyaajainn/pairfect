@@ -193,6 +193,7 @@ export default function SharedControlGame() {
                     remoteInput={remoteInput}
                     onWin={handleWin}
                     isGameOver={status !== 'PLAYING'}
+                    channelRef={channelRef}
                 />
                 {status === 'WON' && (
                     <div className={styles.overlay}>

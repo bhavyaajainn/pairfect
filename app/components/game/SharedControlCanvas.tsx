@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import styles from './sharedControlCanvas.module.css';
 
 // -- TYPES --
@@ -28,15 +28,17 @@ interface GameProps {
   remoteInput: Partial<InputState>;
   onWin?: () => void;
   isGameOver?: boolean;
+  channelRef: React.MutableRefObject<any>;
 }
 
 // -- CONSTANTS --
 const WORLD_WIDTH = 800;
 const WORLD_HEIGHT = 500;
 const PLAYER_SIZE = 30;
-const FRICTION = 0.92;
-const MOVE_ACCEL = 0.6;
-const MAX_SPEED = 6;
+const STEP_SIZE = 15; // Discrete step per press
+const FRICTION = 0.92; // No longer used for movement, but keeping for now
+const MOVE_ACCEL = 0.6; // No longer used for movement, but keeping for now
+const MAX_SPEED = 6; // No longer used for movement, but keeping for now
 
 // Level Design
 const OBSTACLES: Obstacle[] = [
@@ -64,18 +66,53 @@ const OBSTACLES: Obstacle[] = [
 const GOAL = { x: 740, y: 440, w: 40, h: 40 };
 const START_POS = { x: 60, y: 60 };
 
-export default function SharedControlCanvas({ role, onInput, remoteInput, onWin, isGameOver }: GameProps) {
+export default function SharedControlCanvas({ role, onInput, remoteInput, onWin, isGameOver, channelRef }: GameProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   // Game State Refs
   const pos = useRef({ ...START_POS });
-  const vel = useRef({ x: 0, y: 0 });
   const zHeight = useRef(0); // 0 = ground, >0 = air
   const isCrouching = useRef(false);
   const localInput = useRef<Partial<InputState>>({});
   const won = useRef(false);
   
-  // ... (keep useEffect for key controls)
+  const checkCollision = useCallback((nextX: number, nextY: number, jumping: boolean, crouching: boolean) => {
+    const pLeft = nextX;
+    const pRight = nextX + PLAYER_SIZE;
+    const pTop = nextY;
+    const pBottom = nextY + PLAYER_SIZE;
+
+    for (const obs of OBSTACLES) {
+        const oLeft = obs.x;
+        const oRight = obs.x + obs.w;
+        const oTop = obs.y;
+        const oBottom = obs.y + obs.h;
+
+        if (pRight > oLeft && pLeft < oRight && pBottom > oTop && pTop < oBottom) {
+            if (obs.type === 'WALL') return true;
+            if (obs.type === 'HURDLE' && !jumping) return true;
+            if (obs.type === 'LOW_BEAM' && !crouching) return true;
+        }
+    }
+    return false;
+  }, []); // No dependencies, as OBSTACLES and PLAYER_SIZE are constants
+
+  const broadcastPos = useCallback(() => {
+    if (!channelRef.current) return;
+    if (role === 'HORIZONTAL') {
+        channelRef.current.send({
+            type: 'broadcast',
+            event: 'sync_pos',
+            payload: { x: pos.current.x }
+        });
+    } else {
+        channelRef.current.send({
+            type: 'broadcast',
+            event: 'sync_pos',
+            payload: { y: pos.current.y }
+        });
+    }
+  }, [channelRef, role]); // Dependencies: channelRef and role
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -92,26 +129,48 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
       }
 
       const update: Partial<InputState> = {};
-      
-      // KEY MAPPING LOGIC
-      // JUMP = Up OR Left (depending on role availability)
-      // CROUCH = Down OR Right (depending on role availability)
+      let moved = false;
 
+      // JUMP/CROUCH State logic (Held Keys)
+      const isJumping = localInput.current.jump || false;
+      const isCrouchingState = localInput.current.crouch || false;
+
+      // MOVEMENT LOGIC (Discrete Steps)
       if (role === 'HORIZONTAL') {
-        // I control Left/Right Movement
-        if (e.key === 'ArrowLeft') update.left = true;
-        if (e.key === 'ArrowRight') update.right = true;
-        
-        // So I use Up/Down for Actions
+        if (e.key === 'ArrowLeft') {
+            const nextX = pos.current.x - STEP_SIZE;
+            if (!checkCollision(nextX, pos.current.y, isJumping, isCrouchingState)) {
+                pos.current.x = nextX;
+                moved = true;
+            }
+        }
+        if (e.key === 'ArrowRight') {
+            const nextX = pos.current.x + STEP_SIZE;
+            if (!checkCollision(nextX, pos.current.y, isJumping, isCrouchingState)) {
+                pos.current.x = nextX;
+                moved = true;
+            }
+        }
+        // Action Mapping
         if (e.key === 'ArrowUp') update.jump = true;
         if (e.key === 'ArrowDown') update.crouch = true;
       } 
       else if (role === 'VERTICAL') {
-        // I control Up/Down Movement
-        if (e.key === 'ArrowUp') update.up = true;
-        if (e.key === 'ArrowDown') update.down = true;
-
-        // So I use Left/Right for Actions
+        if (e.key === 'ArrowUp') {
+            const nextY = pos.current.y - STEP_SIZE;
+            if (!checkCollision(pos.current.x, nextY, isJumping, isCrouchingState)) {
+                pos.current.y = nextY;
+                moved = true;
+            }
+        }
+        if (e.key === 'ArrowDown') {
+            const nextY = pos.current.y + STEP_SIZE;
+            if (!checkCollision(pos.current.x, nextY, isJumping, isCrouchingState)) {
+                pos.current.y = nextY;
+                moved = true;
+            }
+        }
+        // Action Mapping
         if (e.key === 'ArrowLeft') update.jump = true;
         if (e.key === 'ArrowRight') update.crouch = true;
       }
@@ -119,6 +178,9 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
       // Universal Keys
       if (e.key === ' ') update.jump = true;
       if (e.key === 'Shift') update.crouch = true;
+
+      // Broadcast if moved or state changed
+      if (moved) broadcastPos();
 
       if (Object.keys(update).length > 0) {
         localInput.current = { ...localInput.current, ...update };
@@ -130,13 +192,11 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
       const update: Partial<InputState> = {};
       
       if (role === 'HORIZONTAL') {
-        if (e.key === 'ArrowLeft') update.left = false;
-        if (e.key === 'ArrowRight') update.right = false;
+        // Actions only
         if (e.key === 'ArrowUp') update.jump = false;
         if (e.key === 'ArrowDown') update.crouch = false;
       } else if (role === 'VERTICAL') {
-        if (e.key === 'ArrowUp') update.up = false;
-        if (e.key === 'ArrowDown') update.down = false;
+        // Actions only
         if (e.key === 'ArrowLeft') update.jump = false;
         if (e.key === 'ArrowRight') update.crouch = false;
       }
@@ -153,39 +213,13 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
-    const checkCollision = (nextX: number, nextY: number, jumping: boolean, crouching: boolean) => {
-        // ... (keep collision logic)
-        const pLeft = nextX;
-        const pRight = nextX + PLAYER_SIZE;
-        const pTop = nextY;
-        const pBottom = nextY + PLAYER_SIZE;
-
-        for (const obs of OBSTACLES) {
-            const oLeft = obs.x;
-            const oRight = obs.x + obs.w;
-            const oTop = obs.y;
-            const oBottom = obs.y + obs.h;
-
-            if (pRight > oLeft && pLeft < oRight && pBottom > oTop && pTop < oBottom) {
-                if (obs.type === 'WALL') return true;
-                if (obs.type === 'HURDLE' && !jumping) return true;
-                if (obs.type === 'LOW_BEAM' && !crouching) return true;
-            }
-        }
-        return false;
-    };
-
     const render = () => {
       // Pause if game over
       if (isGameOver) return;
-
-      const hInput = role === 'HORIZONTAL' ? localInput.current : remoteInput;
-      const vInput = role === 'VERTICAL' ? localInput.current : remoteInput;
       
+      // Sync Jump/Crouch State
       const inputJump = localInput.current.jump || remoteInput.jump;
       const inputCrouch = localInput.current.crouch || remoteInput.crouch;
-
-      // -- LOGIC --
 
       if (inputJump) {
           zHeight.current = 10;
@@ -195,27 +229,9 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
 
       isCrouching.current = !!inputCrouch;
 
-      // Movement Force
-      if (hInput.left) vel.current.x -= MOVE_ACCEL;
-      if (hInput.right) vel.current.x += MOVE_ACCEL;
-      if (vInput.up) vel.current.y -= MOVE_ACCEL;
-      if (vInput.down) vel.current.y += MOVE_ACCEL;
-
-      // Friction
-      vel.current.x *= FRICTION;
-      vel.current.y *= FRICTION;
-
-      // Collision Check
-      if (checkCollision(pos.current.x + vel.current.x, pos.current.y, zHeight.current > 0, isCrouching.current)) {
-          vel.current.x = -vel.current.x * 0.5;
-      }
-      if (checkCollision(pos.current.x, pos.current.y + vel.current.y, zHeight.current > 0, isCrouching.current)) {
-          vel.current.y = -vel.current.y * 0.5;
-      }
-
-      // Apply Move
-      pos.current.x += vel.current.x;
-      pos.current.y += vel.current.y;
+      // NOTE: Movement is now EVENT-DRIVEN in handleKeyDown/touch
+      // We do NOT update pos.current here based on held keys or velocity.
+      // The position is updated directly by key/touch events.
 
       // Win Check
       if (
@@ -243,7 +259,6 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
 
       // Obstacles
       OBSTACLES.forEach(obs => {
-        // ... (keep obstacle rendering colors)
           if (obs.type === 'WALL') ctx.fillStyle = '#6b7280';
           else if (obs.type === 'HURDLE') ctx.fillStyle = '#f97316'; // Orange
           else if (obs.type === 'LOW_BEAM') ctx.fillStyle = '#3b82f6'; // Blue
@@ -320,21 +335,129 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [role, remoteInput, isGameOver]);
+  }, [role, remoteInput, isGameOver, checkCollision, broadcastPos, onWin]);
 
-  // ... (inside SharedControlCanvas)
+    // Logic for Touch mapping (mirrors Key mapping)
+    const handleTouchStart = (dir: 'up' | 'down' | 'left' | 'right') => {
+        const update: Partial<InputState> = {};
+        let moved = false;
+        const isJumping = localInput.current.jump || false;
+        const isCrouchingState = localInput.current.crouch || false;
 
-  // Touch Handlers
-  const handleTouchStart = (action: keyof InputState) => {
-    localInput.current[action] = true;
-    onInput({ ...localInput.current });
-  };
+        if (role === 'HORIZONTAL') {
+            if (dir === 'left') {
+                const nextX = pos.current.x - STEP_SIZE;
+                if (!checkCollision(nextX, pos.current.y, isJumping, isCrouchingState)) {
+                    pos.current.x = nextX;
+                    moved = true;
+                }
+            }
+            if (dir === 'right') {
+                const nextX = pos.current.x + STEP_SIZE;
+                if (!checkCollision(nextX, pos.current.y, isJumping, isCrouchingState)) {
+                    pos.current.x = nextX;
+                    moved = true;
+                }
+            }
+            // Actions
+            if (dir === 'up') update.jump = true;
+            if (dir === 'down') update.crouch = true;
+        } 
+        else if (role === 'VERTICAL') {
+            if (dir === 'up') {
+                const nextY = pos.current.y - STEP_SIZE;
+                if (!checkCollision(pos.current.x, nextY, isJumping, isCrouchingState)) {
+                    pos.current.y = nextY;
+                    moved = true;
+                }
+            }
+            if (dir === 'down') {
+                const nextY = pos.current.y + STEP_SIZE;
+                if (!checkCollision(pos.current.x, nextY, isJumping, isCrouchingState)) {
+                    pos.current.y = nextY;
+                    moved = true;
+                }
+            }
+            // Actions
+            if (dir === 'left') update.jump = true;
+            if (dir === 'right') update.crouch = true;
+        }
 
-  const handleTouchEnd = (action: keyof InputState) => {
-    localInput.current[action] = false;
-    onInput({ ...localInput.current });
-  };
+        if (moved && channelRef.current) {
+             if (role === 'HORIZONTAL') {
+                channelRef.current.send({ type: 'broadcast', event: 'sync_pos', payload: { x: pos.current.x } });
+            } else {
+                channelRef.current.send({ type: 'broadcast', event: 'sync_pos', payload: { y: pos.current.y } });
+            }
+        }
+
+        if (Object.keys(update).length > 0) {
+            localInput.current = { ...localInput.current, ...update };
+            onInput(localInput.current);
+        }
+    };
+
+    const handleTouchEnd = (dir: 'up' | 'down' | 'left' | 'right') => {
+        const update: Partial<InputState> = {};
+        if (role === 'HORIZONTAL') {
+            // Only clear Action flags
+            if (dir === 'up') update.jump = false;
+            if (dir === 'down') update.crouch = false;
+        } else {
+            if (dir === 'left') update.jump = false;
+            if (dir === 'right') update.crouch = false;
+        }
+        
+        if (Object.keys(update).length > 0) {
+            localInput.current = { ...localInput.current, ...update };
+            onInput(localInput.current);
+        }
+    };
+
+    // SYNC LOOP: Broadcast authoritative axis
+    useEffect(() => {
+        if (!channelRef.current || isGameOver) return;
+
+        const syncInterval = setInterval(() => {
+            if (role === 'HORIZONTAL') {
+                channelRef.current?.send({
+                    type: 'broadcast',
+                    event: 'sync_pos',
+                    payload: { x: pos.current.x }
+                });
+            } else {
+                channelRef.current?.send({
+                    type: 'broadcast',
+                    event: 'sync_pos',
+                    payload: { y: pos.current.y }
+                });
+            }
+        }, 100); // 10Hz sync
+
+        const channel = channelRef.current;
+        const sub = channel.on('broadcast', { event: 'sync_pos' }, ({ payload }: { payload: any }) => {
+            if (role === 'HORIZONTAL' && payload.y !== undefined) {
+                // I am Horz, I trust Vert's Y
+                // Interpolate or snap? Snap for now to fix desync hard.
+                if (Math.abs(pos.current.y - payload.y) > 5) {
+                    pos.current.y = payload.y;
+                }
+            } else if (role === 'VERTICAL' && payload.x !== undefined) {
+                // I am Vert, I trust Horz's X
+                if (Math.abs(pos.current.x - payload.x) > 5) {
+                    pos.current.x = payload.x;
+                }
+            }
+        });
+
+        return () => {
+             clearInterval(syncInterval);
+             channel.off('broadcast', { event: 'sync_pos' });
+        };
+    }, [role, isGameOver]); // Re-bind if role changes
 
   return (
     <div className={styles.canvasContainer}>
@@ -345,49 +468,43 @@ export default function SharedControlCanvas({ role, onInput, remoteInput, onWin,
             className={styles.canvas}
          />
          
-         {/* Mobile Controls Overlay */}
+         {/* Mobile D-Pad Overlay */}
          <div className={`${styles.controlsOverlay} ${styles.mobileOnly}`}>
-            <div className={styles.dpad}>
-               {role === 'HORIZONTAL' ? (
-                   <>
-                     <button 
-                        className={styles.touchBtn}
-                        onTouchStart={() => handleTouchStart('left')}
-                        onTouchEnd={() => handleTouchEnd('left')}
-                     >◀</button>
-                     <button 
-                        className={styles.touchBtn}
-                        onTouchStart={() => handleTouchStart('right')}
-                        onTouchEnd={() => handleTouchEnd('right')}
-                     >▶</button>
-                   </>
-               ) : (
-                   <>
-                     <button 
-                        className={styles.touchBtn}
-                        onTouchStart={() => handleTouchStart('up')}
-                        onTouchEnd={() => handleTouchEnd('up')}
-                     >▲</button>
-                     <button 
-                        className={styles.touchBtn}
-                        onTouchStart={() => handleTouchStart('down')}
-                        onTouchEnd={() => handleTouchEnd('down')}
-                     >▼</button>
-                   </>
-               )}
-            </div>
+            <div className={styles.dpadGrid}>
+                {/* UP */}
+                <div className={styles.dpadRow}>
+                    <button 
+                        className={`${styles.touchBtn} ${role === 'HORIZONTAL' ? styles.actionBtn : ''}`}
+                        onTouchStart={(e) => { e.preventDefault(); handleTouchStart('up'); }}
+                        onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('up'); }}
+                    >{role === 'HORIZONTAL' ? 'JUMP' : '▲'}</button>
+                </div>
+                
+                {/* LEFT / RIGHT */}
+                <div className={styles.dpadRow}>
+                    <button 
+                        className={`${styles.touchBtn} ${role === 'VERTICAL' ? styles.actionBtn : ''}`}
+                        onTouchStart={(e) => { e.preventDefault(); handleTouchStart('left'); }}
+                        onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('left'); }}
+                    >{role === 'VERTICAL' ? 'JUMP' : '◀'}</button>
 
-            <div className={styles.dpad}>
-                <button 
-                    className={`${styles.touchBtn} ${styles.crouchBtn}`}
-                    onTouchStart={() => handleTouchStart('crouch')}
-                    onTouchEnd={() => handleTouchEnd('crouch')}
-                >Build</button>
-                <button 
-                    className={`${styles.touchBtn} ${styles.actionBtn}`}
-                    onTouchStart={() => handleTouchStart('jump')}
-                    onTouchEnd={() => handleTouchEnd('jump')}
-                >Jump</button>
+                    <div className={styles.dpadSpacer} />
+
+                    <button 
+                        className={`${styles.touchBtn} ${role === 'VERTICAL' ? styles.crouchBtn : ''}`}
+                        onTouchStart={(e) => { e.preventDefault(); handleTouchStart('right'); }}
+                        onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('right'); }}
+                    >{role === 'VERTICAL' ? 'CROUCH' : '▶'}</button>
+                </div>
+
+                {/* DOWN */}
+                <div className={styles.dpadRow}>
+                     <button 
+                        className={`${styles.touchBtn} ${role === 'HORIZONTAL' ? styles.crouchBtn : ''}`}
+                        onTouchStart={(e) => { e.preventDefault(); handleTouchStart('down'); }}
+                        onTouchEnd={(e) => { e.preventDefault(); handleTouchEnd('down'); }}
+                    >{role === 'HORIZONTAL' ? 'CROUCH' : '▼'}</button>
+                </div>
             </div>
          </div>
     </div>

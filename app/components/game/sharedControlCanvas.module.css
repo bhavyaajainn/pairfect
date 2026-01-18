@@ -26,8 +26,26 @@
   width: 100%;
   max-width: 500px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Center the D-Pad */
   padding: 0 1rem;
+}
+
+.dpadGrid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dpadRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.dpadSpacer {
+  width: 64px;
+  height: 64px;
 }
 
 .touchBtn {
